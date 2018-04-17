@@ -1,10 +1,5 @@
 ---
 layout: post
-title: You're up and running!
+title: Playing with deepfakes
 ---
-
-Next you can update your site name, avatar and other options using the _config.yml file in the root of your repository (shown below).
-
-![_config.yml]({{ site.baseurl }}/images/config.png)
-
-The easiest way to make your first post is to edit this one. Go into /_posts/ and update the Hello World markdown file. For more instructions head over to the [Jekyll Now repository](https://github.com/barryclark/jekyll-now) on GitHub.
+Deepfakes has had a lot of traction in the past few months, due to its unforseen application in the porn industry. Most people were interested to use it for their own pleasure but few people actually cared for the core technology. In this blog post we try to explore the architecture of deepfakes and how deep learning is used to make this, seemingly miraculous, application possible.
