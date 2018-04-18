@@ -33,5 +33,5 @@ Due to this, one can "evolve" from input vector $$ X_1 $$ to $$ X_2 $$ to anothe
 $$ Z = f^{-1}(Z_1(1-t) + Z_2\:t) \quad t\in [0,1]$$
 
 {: .center}
-![face_latent](/images/face_latent.jpeg)
+![face_latent](/assets/images/face_latent.jpeg)
 
