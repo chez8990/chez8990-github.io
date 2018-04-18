@@ -26,12 +26,84 @@ $$ l(X, X^\prime) = \frac{1}{n} \sum_{i=1}^n ||x_i - x^\prime_i||^2 $$
 
 
 ### Why autoencoder?
-The latent space has a surprising linear structure, meaning one can perform linear arithmetic on the latent vectors, and the corresponding decoder output $$ X^\prime $$ will reflect the arithmetic done on the latent vectors. 
+Data that appears in nature are usually very high dimensional but sparse, we know from experience that these data are not well suited to be used straight away for machine learning. 
+By using an autoencoder as a dimenison reduction estimator, one can in theory compress these data into any desired dimension. 
 
-Due to this, one can "evolve" from input vector $$ X_1 $$ to $$ X_2 $$ to another by decoding the line segment between latent vectors $$ Z_1 $$ and $$ Z_2 $$.
+If the dimension of the latent space $$ m \in \{2, 3\} $$, we can even visualize the latent space and get a glimse on the geometry of the data, which helps us understand our data even better. 
 
-$$ Z = f^{-1}(Z_1(1-t) + Z_2\:t) \quad t\in [0,1]$$
+More importantly, the latent space representation is ***dense***, which means we can traverse along different trajectories within the latent space, and interpret the results through the decoder. One such example is linear interpolation between two points in the latent space.
+
+Given input vector $$ X_1 $$, $$ X_2 $$ the line segment between latent vectors $$ Z_1 $$ and $$ Z_2 $$ is as follows
+
+$$ Z_t = Z_1(1-t) + Z_2\:t \quad t\in [0,1] $$
+
+We can then interpret this equation through the decoder output
+
+$$ X^\prime_t = f^{-1}(Z_t) \quad t\in [0,1]$$
 
 {: .center}
 ![face_latent](/assets/images/face_latent.jpeg)
 
+### Implementation in Python with Keras
+
+We will now build an autoencoder with Keras and demonstrate it with the MNIST dataset.
+
+The network architecture goes as follows 
+<table>
+	<tbody>
+		<tr>
+			<td>&nbsp;<strong>Layer</strong></td>
+			<td><strong>Output shape</strong>&nbsp;</td>
+			<td><strong>Parameter number</strong>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;Input</td>
+			<td>&nbsp;(None, 1, 784)</td>
+			<td>&nbsp;0</td>
+		</tr>
+		<tr>
+			<td>Dense&nbsp;</td>
+			<td>(None, 1, 512)</td>
+			<td>401920&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Dense&nbsp;</td>
+			<td>&nbsp;(None, 1, 256)&nbsp;</td>
+			<td>131328&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Dense&nbsp;</td>
+			<td>&nbsp;(None, 1, 64)&nbsp;&nbsp;</td>
+			<td>16448&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Dense&nbsp;</td>
+			<td>&nbsp;(None, 1, 2)</td>
+			<td>130&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Dense&nbsp;</td>
+			<td>&nbsp;(None, 1, 64)</td>
+			<td>192&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Dense&nbsp;</td>
+			<td>&nbsp;(None, 1, 256)</td>
+			<td>16640&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Dense&nbsp;</td>
+			<td>&nbsp;(None, 1, 512)</td>
+			<td>131584&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Dense&nbsp;</td>
+			<td>&nbsp;(None, 1, 784)</td>
+			<td>402192&nbsp;</td>
+		</tr>
+	</tbody>
+</table>
+
+Notice the number of filters evolves in the way described above, the input dimension is 784 = 28 x 28 as we have flatten the image, the latent dimension is 2 for easy visualization of the latent space.
+
+{% gist 295f40d5a8532683d6c149d6cff46472 %}
