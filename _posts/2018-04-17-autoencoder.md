@@ -44,6 +44,8 @@ $$ X^\prime_t = f^{-1}(Z_t) \quad t\in [0,1]$$
 {: .center}
 ![face_latent](/assets/images/face_latent.jpeg)
 
+There's just one more perk autoencoder brings to the table, it allows us to sample from the data's distribution in the latent space and create more data, this is especially important if we are lacking in data quantity. 
+
 ### Implementation in Python with Keras
 
 We will now build an autoencoder with Keras and demonstrate it with the MNIST dataset.
@@ -107,3 +109,14 @@ The network architecture goes as follows
 Notice the number of filters evolves in the way described above, the input dimension is 784 = 28 x 28 as we have flatten the image, the latent dimension is 2 for easy visualization of the latent space.
 
 {% gist 295f40d5a8532683d6c149d6cff46472 %}
+
+We can see that the latent space structure has been learned 
+
+### Drawbacks of autoencoders
+
+Autoencoders could end up learning nothing but simply copy and paste the input as the output, this is the eventual destiny of any vanilla autoencoder, since it's approximating the identity function; this will be harmful if our goal was to generate more data from our sample (time inefficient and quality deficient). Moreover, autoencoders trained this way are sensitive to the input, any distortion to the data (noise, rotation, reflection) could detriment the model's ability to generate correct output. 
+
+(include examples)
+
+
+Are there ways that we can ensure variety, stability and quality of the generated data in an autoencoder? Go to [Other types of autoencoders](/) to see more.
