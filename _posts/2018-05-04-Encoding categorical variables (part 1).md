@@ -103,7 +103,7 @@ We will explore a method known as **Entity embedding** <a href='#2'> [2]</a>, wh
 
 The overall structure is as follows 
 
-![structure](/assets/images/entity_embedding_structure.jpg)
+![structure](/assets/images/entity_embedding_structure.JPG)
 
 The first layer is called the embedding layer, all categorical variables are converted into a one-hot vector $\delta_{x_i\alpha}$, it is then fed into a fully connected layer, whose weights will be treated as our embedding. So the output of our embedding layer looks like this
 
