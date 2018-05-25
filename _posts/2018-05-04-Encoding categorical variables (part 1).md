@@ -3,9 +3,6 @@ layout: post
 title: Feature engineering - Encoding categorical variables (Part 1)
 ---
 
-
-### Why u do dis?
-
 Categorical variables are discrete variables that take values from a finite set. Examples of some categorical variables are 
 
 <ul>
@@ -62,6 +59,8 @@ $$ \lambda(n) = \frac{1}{1+e^{\frac{n-k}{f}}}$$
 
 $k$ is known as the "threshold" and $f$ is a smoothing parameter that determines the "slope" of the function around $k$. If $f\rightarrow \infty$, $\lambda$ basically becomes a hard-thresholding.
 
+![belief_function](/assets/images/belief_function.jpeg)
+
 #### What about the bias bro?
 
 Now, including information from the target variable sounds all kinds of wrong in the world of machine learning, as it would cause overfitting if not done carefully. Moreover, when applied to testing data, there are no labels provided, so how do we cope that situation? 
@@ -70,21 +69,11 @@ Those are all legit concerns, one way to overcome all of these issues is to use 
 
 
 #### Cross-validation in target encoding
-The idea is as follows, suppose we have a categorical feature $x$ with samples $x_{ic}$ ($i$-th sample of category $c$)
+The idea is as follows
 
-$$ \begin{pmatrix}
-	u_{1c} \\
-	\vdots \\
-	u_{kc} \\ \\
-	\hline\\
-	v_{1c}\\
-	\vdots \\
-	v_{nc} \\
-	\end{pmatrix}$$
+![cv_illustration](/assets/images/cv_illustration.jpg)
 
-So we divide the fold into a training and testing set $$\{u_i\}$$, $$\{v_j\}$$. We first calculate $IC(x)$ using $u_i$, and apply the encoding to the $v_j$'s. When trained using this method, the model will simulate the scenario during testing stage.
-
-In practice, the training set inside each fold is further divided into more folds to include more noise to the encoding of each class. 
+In practice, the training set inside each fold is further divided into more folds to include more noise to the encoding of each class (some noise is preferred here as it adds diversity to each class without tempering too much with the actual statistics). 
 
 The implementation is as follows 
 
@@ -103,7 +92,7 @@ We will explore a method known as **Entity embedding** <a href='#2'> [2]</a>, wh
 
 The overall structure is as follows 
 
-![structure](/assets/images/entity_embedding_structure.jpg)
+![structure](/assets/images/entity_embedding_structure.JPG)
 
 The first layer is called the embedding layer, all categorical variables are converted into a one-hot vector $\delta_{x_i\alpha}$, it is then fed into a fully connected layer, whose weights will be treated as our embedding. So the output of our embedding layer looks like this
 
@@ -119,6 +108,23 @@ Below is an implementation in keras.
 
 
 ### Some thoughts...
+
+#### Extending target encoding
+
+In our formula above, we have used the $\mathbb{E}(y\mid x)$ and $\Pr(y\mid x)$. We could include more variables than just $x$ when we encode. 
+For instance, if $X = \{x_1, \dots, x_n\}$ are categorical variables, we can instead choose to do
+
+
+$$ IC(x) = \begin{cases} 
+			\lambda(n)\mathbb{E}[y \mid A] - (1-\lambda(n))\mathbb{E}[y] & \text{if regression} \\
+			\\
+			\lambda(n)\Pr(y \mid A) - (1-\lambda(n))\Pr(y) & \text{if classification} 
+			\end{cases}
+$$
+
+where $A \subseteq X$ is a subset of $X$. So in a sense, this is including "interactions" between the variates. One could argue that, when encoding this way, we can combine the variables in $A$ into one variable. But I don't have proof or experimental evidence to support that... (This is left for future work)
+
+#### Why should entity embeddings be learned supervised..?
 
 In other areas such as NLP and facial recognition, embeddings aren't acquired this way. Specifically, embeddings are learned by exploting the internal structure of the features within a dataset, ***not*** by its impact on a target variable. So these embeddings/encodings are learned by means of unsupervised learning (Word2Vec, FastText, PCA, Autoencoder, etc.).
 

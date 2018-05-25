@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Autoencoder
+title: Autoencoder (part 1)
 ---
 
 ### What is an autoencoder
