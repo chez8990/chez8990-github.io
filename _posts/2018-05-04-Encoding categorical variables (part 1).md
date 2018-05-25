@@ -106,7 +106,6 @@ Below is an implementation in keras.
 
 {% gist 9764cceccca977168762e78d3ae79119 %}
 
-
 ### Some thoughts...
 
 #### Extending target encoding
