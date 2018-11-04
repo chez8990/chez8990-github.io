@@ -3,7 +3,7 @@ layout: post
 title: EM algorithm and mixtures of distributions
 ---
 
-As a data scientist in the retail banking sector, it is natural I do a lot of customer segmentations. Recently I was assigned to investigate on what kind of behavior our investment fund customers exhibit online. Afterwards I decided to write a blog about Gaussian mixture as I thought the theory was quite interesting.
+As a data scientist in the retail banking sector, it is natural that I do a lot of customer segmentations. Recently I was assigned to investigate on what kind of behavior our investment fund customers exhibit online, I used Gaussian mixture models to see what kind of "in between" After the project was concluded I decided to write a blog about Gaussian mixture as I thought the theory was quite interesting.
 
 ## Background 
 
@@ -20,6 +20,8 @@ $$\begin{align*}
 $$
 
 where $\pi$ is the weighting of the first distribution, often called the ***responsbility*** of first distribution generating $x$, same interpretation is applied to $(1-\pi)$, $z_k$ an indicator of the components.
+
+Note that in the most commonly used cluster algorthm K-Means, the responsibility is binary, meaning that a data point either came from a particular component or it did not, this can affect how we interpret the datapoints that are "in between" geometrically. 
 
 To loosen the notation as well as generalize the results we will obtain, let's assume we have $K$ components instead, so the density is then
 
@@ -169,3 +171,45 @@ $$
 In this implementation, I used some scipy functions for convenience, they can be swapped out to make it purely numpy based.
 
 {%gist d0caaaf32335a2f9e1d0e93ca7e20706%}
+
+## Experimentation
+
+I have generated a dataset that came from three distributions, these are generated with labels so we can assess the quality of our clustering directly. 
+
+![three_clusters](/assets/images/three_clusters.JPG)
+
+I ran GMM for 280 iteration and return a classfication report from sklearn. The number of iteration can be determined by performing validation on lower bound provided in (2), or perform early stopping.
+
+![val_curve](/assets/images/validation_curve.JPG)
+
+<table style='width:70%'>
+	<tr>
+		<th>Label</th>
+		<th>Precision</th>
+		<th>Recall</th>
+		<th>f1-score</th>
+		<th>Support</th>
+	</tr>
+	<tr>
+		<th>0</th>
+		<th>0.90</th>
+		<th>0.50</th>
+		<th>0.67</th>
+		<th>51</th>
+	</tr>
+	<tr>
+		<th>1</th>
+		<th>0.76</th>
+		<th>0.94</th>
+		<th>0.84</th>
+		<th>51</th>
+	</tr>
+	<tr>
+		<th>2</th>
+		<th>0.84</th>
+		<th>0.91</th>
+		<th>1.00</th>
+		<th>48</th>
+	</tr>
+</table>
+
