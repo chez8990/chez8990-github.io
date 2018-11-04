@@ -178,7 +178,7 @@ I have generated a dataset that came from three distributions, these are generat
 
 ![three_clusters](/assets/images/three_clusters.JPG)
 
-I ran GMM for 280 iteration and return a classfication report from sklearn. The number of iteration can be determined by performing validation on lower bound provided in (2), or perform early stopping.
+I ran GMM for 60 iteration and return a classfication report from sklearn. The number of iteration can be determined by performing validation on lower bound provided in (2), or perform early stopping.
 
 ![val_curve](/assets/images/validation_curve.JPG)
 
