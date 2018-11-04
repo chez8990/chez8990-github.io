@@ -9,7 +9,7 @@ As a data scientist in the retail banking sector, it is natural that I do a lot 
 
 Suppose now we are given the following data.
 
-![two_clusters](/assets/images/two_clusters.png)
+![two_clusters](/assets/images/two_clusters.PNG)
 
 It is quite clear that there are two distinct distributions that generated the data. If this observation is correct, one question of immediate interest is what are the two distributions? Let's assume that indeed there were only 2 distributions in the generation process. So that for an individual data point, it's density is 
 
